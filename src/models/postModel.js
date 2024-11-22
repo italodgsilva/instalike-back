@@ -1,7 +1,16 @@
 import { conexao } from "./conexao.js";
 
-export async function getPosts() {
+async function carregarColecao() {
     const db = conexao.db('imersao-instabytes');
-    const colecao = db.collection('posts');
+    return db.collection('posts');
+}
+
+export async function getPosts() {
+    const colecao = await carregarColecao();
     return colecao.find().toArray();
+}
+
+export async function criarPost(dados) {
+    const colecao = await carregarColecao();
+    return colecao.insertOne(dados);
 }
